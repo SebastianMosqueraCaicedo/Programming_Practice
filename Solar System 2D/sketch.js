@@ -1,5 +1,9 @@
+
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  example = new Sun(0, 0, 255, 50, 0);
+
 }
 
 function windowResized() {
@@ -10,4 +14,5 @@ function windowResized() {
 function draw() {
   background(220);
   translate(width / 2, height / 2);
+  example.show();
 }

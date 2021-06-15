@@ -2,5 +2,7 @@
 class Sun extends Astro {
     constructor(x, y, r, g, b) {
         super(x, y, r, g, b);
+        this.w = 50;
+        this.h = 50;
     }
 }
