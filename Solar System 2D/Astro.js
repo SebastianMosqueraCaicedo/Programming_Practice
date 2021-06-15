@@ -1,3 +1,4 @@
+// father class of all objects. contains generalities like coordinates, color, velocity, etc
 class Astro {
     constructor(x, y, r, g, b) {
         this.x = x;
