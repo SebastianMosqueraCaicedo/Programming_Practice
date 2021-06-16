@@ -21,7 +21,7 @@ function setup() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  pixelDensity(4);
+  pixelDensity(3);
 }
 
 function draw() {
@@ -30,14 +30,14 @@ function draw() {
 
   rect(100, 100, 10, 10);
   for (let j = 0; j < suns.length; j++) {
-    suns[j].show();
+    suns[j].show(planets[0]);
     suns[0].col = color(0, 0, 255);
 
   }
   for (let i = 0; i < planets.length; i++) {
 
-    planets[i].show();
-  
-  }
+    planets[i].show(suns[0]);
 
+  }
+  console.log(planets[0].kinec);
 }
