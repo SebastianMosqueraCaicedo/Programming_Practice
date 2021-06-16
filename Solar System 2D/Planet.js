@@ -2,8 +2,7 @@
 class Planet extends Astro {
     constructor(x, y, r, g, b) {
         super(x, y, r, g, b);
-        this.vel = (random(0.5, 2));
-        this.size = random(18, 25);
+        this.size = random(6, 12);
         this.type = "pla";
     }
 }
