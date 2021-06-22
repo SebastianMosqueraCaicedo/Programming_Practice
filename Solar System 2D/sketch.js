@@ -1,3 +1,4 @@
+// backed up in two different computers
 planets = new Array();
 suns = new Array();
 
