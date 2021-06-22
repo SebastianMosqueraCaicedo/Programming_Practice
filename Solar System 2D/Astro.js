@@ -14,8 +14,7 @@ class Astro {
         this.kinec = 0;
         // readable speed
         this.speedR = 0;
-        this.pastX = 0;
-        this.pastY = 0;
+        this.pastV = [];
         // size // 39780000000000000000000000000
         this.size = 5;
         // mass
@@ -24,7 +23,7 @@ class Astro {
         this.g = 0;
         // gravity
         this.grav = 0;
-        // absolute gravity
+        // gravitational acceleration
         this.gravA = 0;
         // tag
         this.type = "Astro";
@@ -33,9 +32,10 @@ class Astro {
         // diferences in x and y
         this.distX = 0;
         this.distY = 0;
-        // direction angle
-        this.dir = 0;
-        // direction coeficents
+        // direction relative from obj to this
+        this.dirRelX = 0;
+        this.dirRelY = 0;
+        // direction coeficents of the movement vecor of this
         this.dirX = 0;
         this.dirY = 0;
         // life
@@ -47,36 +47,68 @@ class Astro {
     show(a) {
         if (this.life > 0) {
 
+            // calculation of the actual velocity measuring the increment in X and Y
             this.absVel = sqrt((sq(this.velX)) + (sq(this.velY)));
-            this.g = 6.674 * (pow(10, -11));
+            this.g = 6
             this.relativePos(a);
             this.gravity(a);
             this.kinetic();
+            // simple circle for now
             noStroke()
             fill(this.col);
             ellipse(this.x, this.y, this.size, this.size);
-            this.velX += (this.gravA * this.dirX) + ((this.size / 50) * this.dirX * this.velX);
-            this.velY += (this.gravA * this.dirY) + ((this.size / 50) * this.dirY * this.velY);
+            // acceleration
+            this.velX += (this.gravA * this.dirX);
+            this.velY += (this.gravA * this.dirY);
+            // actual movement
+            this.x += this.velX;
+            this.y += this.velY;
 
         }
     }
+
+    // calculates the gravitation acceleration
 
     gravity(b) {
 
     }
 
+    // calculates the mass and kinetic energy
+
     kinetic() {
         if (this.type === "sun") {
-            this.mass = (this.size / 50) * ((3.978) * (pow(10, 29)));
+            this.mass = this.size;
         } else{
-            this.mass = (this.size / 50) * ((3.978) * (pow(10, 24)));
+            this.mass = (this.size / 10);
         }
         this.kinec = ((this.mass) * (sq(this.absVel))) / 2;
     }
 
+    // outputs relative positions based on the coordinates of obj and this
+
     relativePos(c) {
-        this.dist = (dist(this.x, this.y, c.x, c.y)) * (1.496 * (pow(10, 11)));
+        this.dist = (dist(this.x, this.y, c.x, c.y));
         
+    }
+
+// calculates the total damage received, taking into consideration this kinetic and obj´s
+
+    damage (d){
+
+    }
+    
+    // outputs new velocity every 3 frames
+
+    PastVel() {
+        if (frameCount % 3) {
+            this.pastV.push(this.absVel);
+        }
+        if (this.pastV.length > 2) {
+            this.pastV.shift();
+        }
+        if(this.pastV.length > 1){
+            this.speedR =this.pastV[1] - this.pastV[0] ;
+        }
     }
 
     // getters
@@ -93,31 +125,8 @@ class Astro {
         return this.col;
     }
 
-    getDens() {
-        return this.dens;
-    }
-
     getSpeed() {
         return this.speedR;
-    }
-
-    // gets coordinates every 3 frames
-
-    getPastX() {
-        if (frameCount % 3) {
-            this.pastX.push(this.x);
-        }
-        if (this.pastX.length > 2) {
-            this.pastX.shift();
-        }
-    }
-    getPastY() {
-        if (frameCount % 3) {
-            this.pastY.push(this.y);
-        }
-        if (this.pastY.length > 2) {
-            this.pastY.shift();
-        }
     }
 
     keyPressed() {
