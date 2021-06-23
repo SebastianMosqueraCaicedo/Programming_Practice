@@ -40,6 +40,8 @@ class Astro {
         this.dirY = 0;
         // life
         this.life = 1;
+        // orbit size
+        this.orbit = 10;
     }
 
     // general object is a strokeless circle
@@ -49,7 +51,10 @@ class Astro {
 
             // calculation of the actual velocity measuring the increment in X and Y
             this.absVel = sqrt((sq(this.velX)) + (sq(this.velY)));
+            // orbit size
+            this.orbit = (2*this.size) + this.grav;
             this.g = 6
+            this.PastVel();
             this.relativePos(a);
             this.gravity(a);
             this.kinetic();
@@ -57,6 +62,9 @@ class Astro {
             noStroke()
             fill(this.col);
             ellipse(this.x, this.y, this.size, this.size);
+            stroke(0, 100);
+            noFill();
+            ellipse(this.x, this.y, this.orbit, this.orbit);
             // acceleration
             this.velX += (this.gravA * this.dirX);
             this.velY += (this.gravA * this.dirY);
@@ -70,6 +78,8 @@ class Astro {
     // calculates the gravitation acceleration
 
     gravity(b) {
+        // maximum gravitational pull
+        this.grav = this.g * this.mass;
 
     }
 
@@ -78,7 +88,7 @@ class Astro {
     kinetic() {
         if (this.type === "sun") {
             this.mass = this.size;
-        } else{
+        } else {
             this.mass = (this.size / 10);
         }
         this.kinec = ((this.mass) * (sq(this.absVel))) / 2;
@@ -88,15 +98,15 @@ class Astro {
 
     relativePos(c) {
         this.dist = (dist(this.x, this.y, c.x, c.y));
-        
-    }
-
-// calculates the total damage received, taking into consideration this kinetic and obj´s
-
-    damage (d){
 
     }
-    
+
+    // calculates the total damage received, taking into consideration this kinetic and obj´s
+
+    damage(d) {
+
+    }
+
     // outputs new velocity every 3 frames
 
     PastVel() {
@@ -106,8 +116,8 @@ class Astro {
         if (this.pastV.length > 2) {
             this.pastV.shift();
         }
-        if(this.pastV.length > 1){
-            this.speedR =this.pastV[1] - this.pastV[0] ;
+        if (this.pastV.length > 1) {
+            this.speedR = this.pastV[1] - this.pastV[0];
         }
     }
 

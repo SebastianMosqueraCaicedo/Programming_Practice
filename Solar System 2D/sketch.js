@@ -37,7 +37,7 @@ function draw() {
   }
   for (let i = 0; i < planets.length; i++) {
 
-    planets[i].show(suns[0]);
+    planets[i].show(suns);
 
   }
   console.log(planets[0].kinec);
