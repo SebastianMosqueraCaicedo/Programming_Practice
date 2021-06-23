@@ -49,3 +49,30 @@ function draw() {
   */
 
 }
+
+function keyPressed() {
+  switch (keyCode) {
+    case 113:
+      for (let i = 0; i < everything.length; i++) {
+        everything[i].lines = true;
+        console.log(suns[0].lines);
+      }
+
+      break;
+
+      case 116:
+        for (let i = 0; i < everything.length; i++) {
+          everything[i].life = 0;
+
+        }
+  
+        break;
+
+    default:
+      for (let i = 0; i < everything.length; i++) {
+        everything[i].lines = false;
+
+      }
+      break;
+  }
+}

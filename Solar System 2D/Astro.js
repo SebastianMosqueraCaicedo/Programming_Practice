@@ -42,6 +42,8 @@ class Astro {
         this.life = 1;
         // orbit size
         this.orbit = 10;
+        // shows lines
+        this.lines = false;
     }
 
     // general object is a strokeless circle
@@ -62,9 +64,11 @@ class Astro {
             noStroke()
             fill(this.col);
             ellipse(this.x, this.y, this.size, this.size);
-            stroke(0, 50);
-            noFill();
-            ellipse(this.x, this.y, this.orbit, this.orbit);
+            if (this.lines === true) {
+                stroke(0, 50);
+                noFill();
+                ellipse(this.x, this.y, this.orbit, this.orbit);
+            }
             // acceleration
             this.velX += (this.gravA * this.dirX);
             this.velY += (this.gravA * this.dirY);
@@ -90,23 +94,22 @@ class Astro {
         }
     }
 
+    // outputs relative positions based on the coordinates of obj and this
+
     relativePos(c) {
 
         for (let i = 0; i < c.length; i++) {
             this.dist = (dist(this.x, this.y, c[i].x, c[i].y));
             if (this.dist < (c[i].orbit / 2)) {
 
-                stroke(0, 50);
-                line(this.x, this.y, c[i].x, c[i].y);
+                if (this.lines === true) {
+                    stroke(0, 50);
+                    line(this.x, this.y, c[i].x, c[i].y);
+                }
             }
         }
 
-
-
     }
-
-    // calculates the total damage received, taking into consideration this kinetic and obj´s
-
 
     // calculates the gravitation acceleration
 
@@ -129,7 +132,7 @@ class Astro {
         this.kinec = ((this.mass) * (sq(this.absVel))) / 2;
     }
 
-    // outputs relative positions based on the coordinates of obj and this
+    // calculates the total damage received, taking into consideration this kinetic and obj´s
 
     damage(d) {
 
@@ -151,13 +154,6 @@ class Astro {
 
     getSpeed() {
         return this.speedR;
-    }
-
-    keyPressed() {
-        if (key === F5) {
-            this.life = 0;
-            noCanvas();
-        }
     }
 
 }
