@@ -1,4 +1,5 @@
 // backed up in two different computers
+everything = new Array();
 planets = new Array();
 suns = new Array();
 
@@ -10,13 +11,15 @@ function setup() {
   for (let i = 0; i < 10; i++) {
     planets.push(new Planet(random(-100, 100),
       random(-100, 100), random(20, 70), random(150, 200), random(80, 160)));
-
+    everything.push(planets[i]);
   }
 
   for (let i = 0; i < 2; i++) {
     suns.push(new Sun(random(-100, 100),
       random(-300, 300), random(150, 200), random(50, 80), random(10, 20)));
+    everything.push(suns[i]);
   }
+
 
 }
 
@@ -37,9 +40,12 @@ function draw() {
   }
   for (let i = 0; i < planets.length; i++) {
 
-    planets[i].show(suns);
+    planets[i].show(everything);
     planets[0].col = color(0, 255, 255);
   }
+  /*
   console.log(planets[0].dist);
   console.log(suns[0].orbit);
+  */
+
 }
