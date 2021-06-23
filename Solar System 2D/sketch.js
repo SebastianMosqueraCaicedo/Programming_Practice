@@ -38,7 +38,8 @@ function draw() {
   for (let i = 0; i < planets.length; i++) {
 
     planets[i].show(suns);
-
+    planets[0].col = color(0, 255, 255);
   }
-  console.log(planets[0].kinec);
+  console.log(planets[0].dist);
+  console.log(suns[0].orbit);
 }

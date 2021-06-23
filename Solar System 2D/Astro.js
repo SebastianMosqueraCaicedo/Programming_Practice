@@ -52,7 +52,7 @@ class Astro {
             // calculation of the actual velocity measuring the increment in X and Y
             this.absVel = sqrt((sq(this.velX)) + (sq(this.velY)));
             // orbit size
-            this.orbit = (2*this.size) + this.grav;
+            this.orbit = (2 * this.size) + this.grav;
             this.g = 6
             this.PastVel();
             this.relativePos(a);
@@ -62,7 +62,7 @@ class Astro {
             noStroke()
             fill(this.col);
             ellipse(this.x, this.y, this.size, this.size);
-            stroke(0, 100);
+            stroke(0, 50);
             noFill();
             ellipse(this.x, this.y, this.orbit, this.orbit);
             // acceleration
@@ -75,11 +75,46 @@ class Astro {
         }
     }
 
+
+    // outputs new velocity every 3 frames
+
+    PastVel() {
+        if (frameCount % 3) {
+            this.pastV.push(this.absVel);
+        }
+        if (this.pastV.length > 2) {
+            this.pastV.shift();
+        }
+        if (this.pastV.length > 1) {
+            this.speedR = this.pastV[1] - this.pastV[0];
+        }
+    }
+
+    relativePos(c) {
+
+        for (let i = 0; i < c.length; i++) {
+            this.dist = (dist(this.x, this.y, c[i].x, c[i].y));
+            if (this.dist < (c[i].orbit / 2)) {
+
+                stroke(0, 50);
+                line(this.x, this.y, c[i].x, c[i].y);
+            }
+        }
+
+
+
+    }
+
+    // calculates the total damage received, taking into consideration this kinetic and obj´s
+
+
     // calculates the gravitation acceleration
 
     gravity(b) {
         // maximum gravitational pull
         this.grav = this.g * this.mass;
+        // gravitational acceleration
+        // this.gravA = map
 
     }
 
@@ -96,29 +131,8 @@ class Astro {
 
     // outputs relative positions based on the coordinates of obj and this
 
-    relativePos(c) {
-        this.dist = (dist(this.x, this.y, c.x, c.y));
-
-    }
-
-    // calculates the total damage received, taking into consideration this kinetic and obj´s
-
     damage(d) {
 
-    }
-
-    // outputs new velocity every 3 frames
-
-    PastVel() {
-        if (frameCount % 3) {
-            this.pastV.push(this.absVel);
-        }
-        if (this.pastV.length > 2) {
-            this.pastV.shift();
-        }
-        if (this.pastV.length > 1) {
-            this.speedR = this.pastV[1] - this.pastV[0];
-        }
     }
 
     // getters
