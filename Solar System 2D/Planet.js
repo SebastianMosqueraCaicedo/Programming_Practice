@@ -4,5 +4,7 @@ class Planet extends Astro {
         super(x, y, r, g, b);
         this.size = random(6, 12);
         this.type = "pla";
+        this.velX = random(-0.5, 0.5);
+        this.velY = random(-0.5, 0.5);
     }
 }

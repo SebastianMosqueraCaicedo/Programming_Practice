@@ -32,9 +32,12 @@ class Astro {
         // diferences in x and y
         this.distX = 0;
         this.distY = 0;
-        // direction relative from obj to this
-        this.dirRelX = 0;
-        this.dirRelY = 0;
+        // coordinates relative from obj to this
+        this.relX = 0;
+        this.relY = 0;
+        // converted distance range
+        this.relRanX = 0;
+        this.relRanY = 0;
         // direction coeficents of the movement vecor of this
         this.dirX = 0;
         this.dirY = 0;
@@ -42,6 +45,7 @@ class Astro {
         this.life = 1;
         // orbit size
         this.orbit = 10;
+        this.orbitInc = 0;
         // shows lines
         this.lines = false;
     }
@@ -54,11 +58,13 @@ class Astro {
             // calculation of the actual velocity measuring the increment in X and Y
             this.absVel = sqrt((sq(this.velX)) + (sq(this.velY)));
             // orbit size
-            this.orbit = (2 * this.size) + this.grav;
+            this.orbit = ((this.size / 10) * this.grav) + this.orbitInc;
             this.g = 6
             this.PastVel();
+
             this.relativePos(a);
             this.gravity(a);
+
             this.kinetic();
             // simple circle for now
             noStroke()
@@ -69,9 +75,7 @@ class Astro {
                 noFill();
                 ellipse(this.x, this.y, this.orbit, this.orbit);
             }
-            // acceleration
-            this.velX += (this.gravA * this.dirX);
-            this.velY += (this.gravA * this.dirY);
+
             // actual movement
             this.x += this.velX;
             this.y += this.velY;
@@ -99,15 +103,39 @@ class Astro {
     relativePos(c) {
 
         for (let i = 0; i < c.length; i++) {
-            this.dist = (dist(this.x, this.y, c[i].x, c[i].y));
-            if (this.dist < (c[i].orbit / 2)) {
+            if (this.type != c[i].type) {
+                this.dist = (dist(this.x, this.y, c[i].x, c[i].y));
+                if (this.dist < (c[i].orbit / 2)) {
+                    this.relX = this.x - c[i].x;
+                    this.relY = this.y - c[i].y;
+                    if (this.lines === true) {
+                        stroke(0, 50);
+                        line(this.x, this.y, c[i].x, c[i].y);
+                    }
 
-                if (this.lines === true) {
-                    stroke(0, 50);
-                    line(this.x, this.y, c[i].x, c[i].y);
+                    this.relRanX = map(this.relX, -c[i].orbit / 2, c[i].orbit / 2, -1, 1, true);
+                    this.relRanY = map(this.relY, -c[i].orbit / 2, c[i].orbit / 2, -1, 1, true);
+                    if (this.relRanX < 0) {
+                        this.dirX += ((1 + this.relRanX) / 10000000) * (c[i].mass);
+                    }
+                    if (this.relRanX > 0) {
+                        this.dirX -= ((1 - this.relRanX) / 10000000) * (c[i].mass);
+                    }
+                    if (this.relRanY < 0) {
+                        this.dirY += ((1 + this.relRanY) / 10000000) * (c[i].mass);
+                    }
+                    if (this.relRanY > 0) {
+                        this.dirY -= ((1 - this.relRanY) / 10000000) * (c[i].mass);
+                    }
+                    // acceleration
+                    this.velX += (this.dirX / this.size);
+                    this.velY += (this.dirY / this.size);
+                    // orbit increment depending on velocity
+                    this.orbitInc = this.absVel * 100;
                 }
             }
         }
+
 
     }
 
