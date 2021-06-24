@@ -27,6 +27,8 @@ class Astro {
         this.gravA = 0;
         // tag
         this.type = "Astro";
+        // does this absorb?
+        this.eats = false;
         // absolute distance to obj // 149600000
         this.dist = 0;
         // diferences in x and y
@@ -43,6 +45,8 @@ class Astro {
         this.dirY = 0;
         // life
         this.life = 1;
+        this.hp = 1;
+        this.dmg = 0;
         // orbit size
         this.orbit = 10;
         this.orbitInc = 0;
@@ -55,17 +59,20 @@ class Astro {
     show(a) {
         if (this.life > 0) {
 
+            // life calculation
+            this.hp = this.mass;
+            // damage calculation
+            this.life = this.hp - this.dmg;
             // calculation of the actual velocity measuring the increment in X and Y
             this.absVel = sqrt((sq(this.velX)) + (sq(this.velY)));
             // orbit size
             this.orbit = ((this.size / 10) * this.grav) + this.orbitInc;
             this.g = 6
             this.PastVel();
-
             this.relativePos(a);
-            this.gravity(a);
-
+            this.gravity();
             this.kinetic();
+            this.damage(a);
             // simple circle for now
             noStroke()
             fill(this.col);
@@ -113,6 +120,8 @@ class Astro {
                         line(this.x, this.y, c[i].x, c[i].y);
                     }
 
+                    // makes movement "smoother"
+
                     this.relRanX = map(this.relX, -c[i].orbit / 2, c[i].orbit / 2, -1, 1, true);
                     this.relRanY = map(this.relY, -c[i].orbit / 2, c[i].orbit / 2, -1, 1, true);
                     if (this.relRanX < 0) {
@@ -141,7 +150,7 @@ class Astro {
 
     // calculates the gravitation acceleration
 
-    gravity(b) {
+    gravity() {
         // maximum gravitational pull
         this.grav = this.g * this.mass;
         // gravitational acceleration
@@ -163,25 +172,22 @@ class Astro {
     // calculates the total damage received, taking into consideration this kinetic and obj´s
 
     damage(d) {
-
-    }
-
-    // getters
-
-    getX() {
-        return this.x;
-    }
-
-    getY() {
-        return this.y;
-    }
-
-    getCol() {
-        return this.col;
-    }
-
-    getSpeed() {
-        return this.speedR;
+        for (let i = 0; i < d.length; i++) {
+            if (this.type != d[i].type) {
+                if (dist(this.x, this.y, d[i].x, d[i].y) < ((this.size / 2) + (d[i].size / 2))) {
+                    if (d[i].eats === true) {
+                        this.dmg += (this.kinec + d[i].mass);
+                        d[i].size += this.mass / 2;
+                    }
+                    if (d[i].eats === false && this.eats === false) {
+                        this.dmg += (this.kinec + d[i].kinec);
+                        d[i].dmg += (this.kinec + d[i].kinec);
+                        this.velX = -this.velX + d[i].kinec;
+                        this.velY = -this.velY + d[i].kinec;
+                    }
+                }
+            }
+        }
     }
 
 }

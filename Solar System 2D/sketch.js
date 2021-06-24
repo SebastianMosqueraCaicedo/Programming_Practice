@@ -2,20 +2,20 @@
 everything = new Array();
 planets = new Array();
 suns = new Array();
-let spacing = 50;
+let spacing = 250;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
 
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 20; i++) {
     planets.push(new Planet(random(width / 2 - spacing, width / 2 + spacing),
       random(height / 2 - spacing, height / 2 + spacing), random(20, 70), random(150, 200), random(80, 160)));
     everything.push(planets[i]);
   }
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 3; i++) {
     suns.push(new Sun(random(width / 2 - spacing, width / 2 + spacing),
       random(height / 2 - spacing, height / 2 + spacing), random(150, 200), random(50, 80), random(10, 20)));
     everything.push(suns[i]);
@@ -48,7 +48,7 @@ function draw() {
   for (let j = 0; j < suns.length; j++) {
     suns[j].show(everything);
     suns[0].col = color(0, 0, 255);
-
+    suns[j].type = "sun" + j;
 
   }
   for (let i = 0; i < planets.length; i++) {
@@ -61,7 +61,7 @@ function draw() {
   console.log(planets[0].dist);
   console.log(suns[0].orbit);
   */
-  console.log(planets[0].absVel);
+  console.log(planets[0].life);
 
 }
 

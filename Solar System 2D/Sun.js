@@ -3,6 +3,7 @@ class Sun extends Astro {
     constructor(x, y, r, g, b) {
         super(x, y, r, g, b);
         this.size = random(50, 80);
+        this.eats = true;
         this.type = "sun";
     }
 
